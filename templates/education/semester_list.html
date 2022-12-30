@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <thead>
+        <td>Id</td>
+        <td>Start date</td>
+        <td>End date</td>
+    </thead>
+<tbody>
+    {% for s in semesters %}
+        <tr>
+        <td>{{ s.id }}</td>
+        <td>{{ s.start_date }}</td>
+        <td>{{ s.end_date  }}</td>
+        </tr>
+    {% endfor %}
+</tbody>
+</table>
+</body>
+</html>

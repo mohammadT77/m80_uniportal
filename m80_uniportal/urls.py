@@ -16,6 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from education.views import semester_view_list, SemesterListView, cookie_test_view, SimpleLoginView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # path('semesters/', semester_view_list, name='semester_list'), # func-based
+    path('semesters/', SemesterListView.as_view(), name='semester_list'), # class-based
+    path('color/<str:color>', cookie_test_view),
+    path('color/', cookie_test_view),
+    path('login/', SimpleLoginView.as_view(), name='login'),
 ]
