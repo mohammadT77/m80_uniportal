@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.auth import login, authenticate
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
@@ -12,7 +13,7 @@ from education.models import Semester
 
 def semester_view_list(request):
     semesters = Semester.objects.all()
-    return render(request, 'education/semester_list.html', {'semesters': semesters})
+    return render(request, 'education/semester_list.html', {'semesters': semesters, 'user': request.user})
 
 
 def cookie_test_view(request, color: str = None):
@@ -21,7 +22,6 @@ def cookie_test_view(request, color: str = None):
     if color is not None:
         resp.set_cookie('color', color)
     return resp
-
 
 
 from django.views import generic, View
@@ -38,18 +38,29 @@ class SemesterListView(generic.ListView):
 
 class SimpleLoginView(View):
     def get(self, *args):
-        return render(self.request, 'education/login.html' )
+        if uid := self.request.session.get('uid'):
+            user = User.objects.get(id=uid)
+            return HttpResponse(f"Welcome {user.username}")
+        return render(self.request, 'education/login.html')
 
     def post(self, *args):
         username = self.request.POST['username']
         password = self.request.POST['password']
 
+        authenticate(username=username, password=password)
         try:
             user = User.objects.get(username=username)
         except:
             return HttpResponse("User Not Found!")
 
         if user.check_password(password):
-            return HttpResponse("OK")
+            resp = HttpResponse("OK")
+            login(username, password)  # set session!
+            return resp
         else:
             return HttpResponse("Incorrect password")
+
+
+def api_test_view(request):
+    name = request.GET['name']
+    return JsonResponse({'msg': f"hello {name}"})

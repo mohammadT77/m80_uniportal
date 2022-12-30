@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+{{ user.username }} ({{ user.id }})
 <table>
     <thead>
         <td>Id</td>
@@ -12,6 +13,7 @@
         <td>End date</td>
     </thead>
 <tbody>
+
     {% for s in semesters %}
         <tr>
         <td>{{ s.id }}</td>
