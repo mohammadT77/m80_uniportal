@@ -22,7 +22,10 @@ class Student(User):
     age = models.IntegerField(_("Age"))
     dept = models.ForeignKey(Department, on_delete=models.RESTRICT, verbose_name=_("Department"), null=False)
     degree = models.ForeignKey("Degree", on_delete=models.RESTRICT, verbose_name=_("Degree"), null=False)
-    courses = models.ManyToManyField("Course", verbose_name=_("Courses"), blank=True)
+    courses = models.ManyToManyField("Course", verbose_name=_("Courses"),
+                                     blank=True,
+                                     through='StudentCourse'
+                                     )
 
 
 class Professor(User):
@@ -45,6 +48,12 @@ class Course(BaseModel):
     dept = models.ForeignKey("Department", on_delete=models.RESTRICT, verbose_name=_("Department"))
     prof = models.ForeignKey("Professor", on_delete=models.RESTRICT, verbose_name=_("Professor"))
     degree = models.ForeignKey("Degree", on_delete=models.RESTRICT, verbose_name=_("Degree"))
+
+
+class StudentCourse(BaseModel):
+    student = models.ForeignKey(Student, on_delete=models.RESTRICT)
+    course = models.ForeignKey(Course, on_delete=models.RESTRICT)
+    exam_mark = models.IntegerField()
 
 
 class Semester(BaseModel):
