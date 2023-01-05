@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button onclick="fetch_show_semesters()">Show semesters</button>
+<table id="semesters">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>Start Date</td>
+        <td>End Date</td>
+    </tr>
+    </thead>
+    <tbody id="semesters-tbody">
+    </tbody>
+</table>
+<br>
+<form action="{% url 'semester_lc_view' %}" method="post">
+    {% csrf_token %}
+    <label for="start_date">Start Date:</label><input type="date" id="start_date" name="start_date">
+    <label for="end_date">End Date:</label><input type="date" id="end_date" name="end_date">
+    <input type="button" value="Create New Semester" onclick="createNewSemester(this.parentElement)">
+</form>
+<script>
+    function fetch_show_semesters(){
+        fetch("{% url 'semester_lc_view' %}")
+        .then((resp)=>resp.json())
+        .then((data)=>show_semesters(data))
+
+
+        function show_semesters(data) {
+            rows = ""
+            for (const d of data) {
+                row = `<tr><td>${d.id}</td><td>${d.start_date}</td><td>${d.end_date}</td></tr>`
+                rows += row
+            }
+            document.getElementById('semesters-tbody').innerHTML = rows
+        }
+    }
+    fetch_show_semesters()
+</script>
+<script>
+    function createNewSemester(formElement){
+        fetch("{% url 'semester_lc_view' %}",
+            {
+                method: 'POST',
+                headers: {
+                    'Accept':'application/json',
+                    'Content-Type': 'application/json',
+                    {#'X-CSRFToken': formElement.querySelector("[name='csrfmiddlewaretoken']").value#}
+                },
+                body: JSON.stringify({
+                    'start_date': formElement.querySelector('#start_date').value,
+                    'end_date': formElement.querySelector('#end_date').value,
+                })  // {"start_date":..., } json
+            }
+        ).then((resp)=>fetch_show_semesters())
+    }
+</script>
+</body>
+</html>

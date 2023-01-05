@@ -20,6 +20,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('education/', include("education.urls")),
     path('api/education/', include("education.api_urls")),
 
     path('login/', LoginView.as_view(template_name='education/login.html'), name='login'),
