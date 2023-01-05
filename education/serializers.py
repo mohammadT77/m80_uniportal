@@ -1,4 +1,5 @@
 from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
 from education.models import *
 
@@ -28,9 +29,13 @@ class DegreeSerializer(ModelSerializer):
 
 
 class StudentSerializer(ModelSerializer):
+    courses = CourseSerializer(many=True, read_only=True) # serializers.StringRelatedField(many=True, read_only=True)
+    # degree = serializers.StringRelatedField(queryset=Degree.objects.all(), many=False, read_only=True)
+
     class Meta:
         model = Student
         exclude = ['password', 'is_staff', 'is_superuser']
+
 
 
 class ProfessorSerializer(ModelSerializer):

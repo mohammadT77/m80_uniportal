@@ -49,6 +49,9 @@ class Course(BaseModel):
     prof = models.ForeignKey("Professor", on_delete=models.RESTRICT, verbose_name=_("Professor"))
     degree = models.ForeignKey("Degree", on_delete=models.RESTRICT, verbose_name=_("Degree"))
 
+    def __str__(self):
+        return f"{self.name} @ {self.dept} BY {self.prof}"
+
 
 class StudentCourse(BaseModel):
     student = models.ForeignKey(Student, on_delete=models.RESTRICT)
