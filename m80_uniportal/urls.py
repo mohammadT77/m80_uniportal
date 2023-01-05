@@ -15,20 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
-from django.urls import path
+from django.urls import path, include
 
-from education.apis import SemesterListApi
-from education.views import semester_view_list, SemesterListView, cookie_test_view, SimpleLoginView, api_test_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('semesters/', semester_view_list, name='semester_list'), # func-based
-    # path('semesters/', SemesterListView.as_view(), name='semester_list'), # class-based
-    path('color/<str:color>', cookie_test_view),
-    path('color/', cookie_test_view),
-    # path('login/', SimpleLoginView.as_view(), name='login'),  # simple-login
+    path('api/education/', include("education.api_urls")),
+
     path('login/', LoginView.as_view(template_name='education/login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('hello_world/', api_test_view),
-    path('semesters_api/', SemesterListApi.as_view())
 ]

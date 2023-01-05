@@ -60,7 +60,3 @@ class SimpleLoginView(View):
         else:
             return HttpResponse("Incorrect password")
 
-
-def api_test_view(request):
-    name = request.GET['name']
-    return JsonResponse({'msg': f"hello {name}"})
