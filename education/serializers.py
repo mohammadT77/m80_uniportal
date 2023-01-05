@@ -30,10 +30,16 @@ class DegreeSerializer(ModelSerializer):
 class StudentSerializer(ModelSerializer):
     class Meta:
         model = Student
-        exclude = ['password']
+        exclude = ['password', 'is_staff', 'is_superuser']
 
 
 class ProfessorSerializer(ModelSerializer):
     class Meta:
         model = Student
         exclude = ['password']
+
+
+class StudentCourseSerializer(ModelSerializer):
+    class Meta:
+        model = StudentCourse
+        fields = '__all__'

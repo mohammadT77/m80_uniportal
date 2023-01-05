@@ -37,3 +37,29 @@ class CourseRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'  # Course.id
     lookup_url_kwarg = 'pk__'
 
+
+# .../Student/ -> GET:list, POST:create
+class StudentListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = StudentSerializer
+    queryset = Student.objects.all()
+
+
+# .../Student/5 -> GET: details, PUT/PATCH: modify, DELETE: destroy
+class StudentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = StudentSerializer
+    queryset = Student.objects.all()
+
+    lookup_field = 'username'  # Student.id
+    lookup_url_kwarg = 'username'
+
+
+class StudentCourseListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = StudentCourseSerializer
+    queryset = StudentCourse.objects.all()
+
+    # student/{sid}/course/ -> List enrolled courses by the student
+    def get_queryset(self):
+        if 'student' in self.kwargs:  # .../<int:sid>/...
+            return StudentCourse.objects.filter(student__username=self.kwargs['student'])
+        return super().get_queryset()  # .../.../...
+
