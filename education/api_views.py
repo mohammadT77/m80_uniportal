@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 from rest_framework import generics
+
+from core.permissions import SelfPermission
 from education.models import *
 from education.serializers import *
 from rest_framework import authentication, permissions, pagination
@@ -50,6 +52,8 @@ class StudentListCreateAPIView(generics.ListCreateAPIView):
 class StudentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StudentSerializer
     queryset = Student.objects.all()
+
+    permission_classes = [permissions.IsAuthenticated, SelfPermission]
 
     lookup_field = 'username'  # Student.id
     lookup_url_kwarg = 'username'

@@ -26,5 +26,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='education/login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
 
-    path('auth-token/', obtain_auth_token, name='api_token_auth')
+    path('auth-token/', obtain_auth_token, name='api_token_auth'),
+
+    path('api-auth/', include('rest_framework.urls'))
 ]
