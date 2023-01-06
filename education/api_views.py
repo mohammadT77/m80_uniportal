@@ -2,16 +2,18 @@ from django.http import JsonResponse
 from rest_framework import generics
 from education.models import *
 from education.serializers import *
-from rest_framework import authentication, permissions
+from rest_framework import authentication, permissions, pagination
 
 
 # .../semester/ -> GET:list, POST:create
 class SemesterListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = SemesterSerializer
     queryset = Semester.objects.all()
+    throttle_scope = 'education'
 
-    authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAuthenticated, permissions.DjangoModelPermissions]  # AdminUser: staff
+    permission_classes = [permissions.IsAuthenticated,
+                          permissions.DjangoModelPermissions]  # AdminUser: staff
+
 
 
 # .../semester/5 -> GET: details, PUT/PATCH: modify, DELETE: destroy
