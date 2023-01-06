@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-922d0i22derxgs-y9&zudrx@13*uera$5fe2fmq1o2q3n!=1lh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', '4f78-5-89-88-82.eu.ngrok.io']
 
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'core.middlewares.RestrictCountryMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -135,3 +136,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'semester_list'
 LOGOUT_REDIRECT_URL = 'login'
+
+RESTRICTED_COUNTRY_CODES = ['IT']
